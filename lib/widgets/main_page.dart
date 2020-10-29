@@ -136,7 +136,7 @@ class MainPage extends StatelessWidget {
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.all(10),
+                      padding: EdgeInsets.all(5),
                       child: Card(
                         clipBehavior: Clip.antiAlias,
                         elevation: 5,
@@ -201,6 +201,7 @@ class MainPage extends StatelessWidget {
                                         );
                                   },
                                   child: Container(
+                                    padding: EdgeInsets.all(5),
                                     width: 50,
                                     height: 50,
                                     color: Colors.white,
@@ -211,7 +212,7 @@ class MainPage extends StatelessWidget {
                                   ),
                                 ),
                                 Container(
-                                  width: 30,
+                                  width: 8,
                                   height: 30,
                                   color: Colors.white,
                                 ),
@@ -253,7 +254,7 @@ class MainPage extends StatelessWidget {
               : screenWidth,
           color: Colors.white70,
           child: Padding(
-            padding: EdgeInsets.all(10),
+            padding: EdgeInsets.all(5),
             child: Card(
               clipBehavior: Clip.antiAlias,
               elevation: 5,
@@ -319,6 +320,7 @@ class MainPage extends StatelessWidget {
                                   !catsList[index].isFavorite));
                         },
                         child: Container(
+                          padding: EdgeInsets.all(5),
                           width: 50,
                           height: 50,
                           color: Colors.white,
@@ -328,7 +330,7 @@ class MainPage extends StatelessWidget {
                         ),
                       ),
                       Container(
-                        width: 30,
+                        width: 8,
                         height: 30,
                         color: Colors.white,
                       ),
