@@ -17,6 +17,7 @@ class DetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
     return BlocProvider(
       create: (_) => getIt<DetailBloc>()..add(DetailEvent.initial(cat)),
       child: BlocConsumer<DetailBloc, DetailState>(
@@ -53,19 +54,27 @@ class DetailPage extends StatelessWidget {
                 child: Container(
                   color: Colors.white,
                   child: Column(
-                    mainAxisSize: MainAxisSize.max,
-                    crossAxisAlignment: CrossAxisAlignment.center,
+                    // mainAxisSize: MainAxisSize.max,
+                    // crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
-                      Hero(
-                        tag: cat.id,
-                        child: Image(
-                          image: NetworkToFileImage(
-                            debug: true,
-                            processError: (_) {
-                              debugPrint("error image download");
-                            },
-                            url: null,
-                            file: File(cat.filePath),
+                      Container(
+                        constraints: BoxConstraints(
+                          minWidth: screenWidth,
+                          maxWidth: screenWidth,
+                          minHeight: screenWidth / 2,
+                          maxHeight: double.infinity,
+                        ),
+                        child: Hero(
+                          tag: cat.id,
+                          child: Image(
+                            image: NetworkToFileImage(
+                              debug: true,
+                              processError: (_) {
+                                debugPrint("error image download");
+                              },
+                              url: null,
+                              file: File(cat.filePath),
+                            ),
                           ),
                         ),
                       ),

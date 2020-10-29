@@ -18,6 +18,7 @@ class Cat {
     @required this.width,
     @required this.height,
     this.filePath,
+    this.isFavorite,
   });
 
   factory Cat.fromJson(Map<String, dynamic> json) {
@@ -28,15 +29,17 @@ class Cat {
       width: json['width'] as int,
       height: json['height'] as int,
       filePath: json['filePath'] as String,
+      isFavorite:
+          json['isFavorite'] != null ? json['isFavorite'] as bool : false,
     );
   }
 
   Map<String, dynamic> toJson() => {
-    'id': id,
-    'url': url,
-    'width': width,
-    'height': height,
-    'isFavorite': isFavorite,
-    'filePath': filePath,
-  };
+        'id': id,
+        'url': url,
+        'width': width,
+        'height': height,
+        'isFavorite': isFavorite,
+        'filePath': filePath,
+      };
 }

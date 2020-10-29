@@ -18,22 +18,8 @@ class _$MainPageEventTearOff {
   }
 
 // ignore: unused_element
-  GetFacts getFacts() {
-    return const GetFacts();
-  }
-
-// ignore: unused_element
   MarkAsFavorite markAsFavorite(int index, Cat cat, bool isChecked) {
     return MarkAsFavorite(
-      index,
-      cat,
-      isChecked,
-    );
-  }
-
-// ignore: unused_element
-  UpdateFavorite updateFavorite(int index, Cat cat, bool isChecked) {
-    return UpdateFavorite(
       index,
       cat,
       isChecked,
@@ -48,31 +34,23 @@ mixin _$MainPageEvent {
   @optionalTypeArgs
   Result when<Result extends Object>({
     @required Result getCats(),
-    @required Result getFacts(),
     @required Result markAsFavorite(int index, Cat cat, bool isChecked),
-    @required Result updateFavorite(int index, Cat cat, bool isChecked),
   });
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
     Result getCats(),
-    Result getFacts(),
     Result markAsFavorite(int index, Cat cat, bool isChecked),
-    Result updateFavorite(int index, Cat cat, bool isChecked),
     @required Result orElse(),
   });
   @optionalTypeArgs
   Result map<Result extends Object>({
     @required Result getCats(GetCats value),
-    @required Result getFacts(GetFacts value),
     @required Result markAsFavorite(MarkAsFavorite value),
-    @required Result updateFavorite(UpdateFavorite value),
   });
   @optionalTypeArgs
   Result maybeMap<Result extends Object>({
     Result getCats(GetCats value),
-    Result getFacts(GetFacts value),
     Result markAsFavorite(MarkAsFavorite value),
-    Result updateFavorite(UpdateFavorite value),
     @required Result orElse(),
   });
 }
@@ -126,14 +104,10 @@ class _$GetCats implements GetCats {
   @optionalTypeArgs
   Result when<Result extends Object>({
     @required Result getCats(),
-    @required Result getFacts(),
     @required Result markAsFavorite(int index, Cat cat, bool isChecked),
-    @required Result updateFavorite(int index, Cat cat, bool isChecked),
   }) {
     assert(getCats != null);
-    assert(getFacts != null);
     assert(markAsFavorite != null);
-    assert(updateFavorite != null);
     return getCats();
   }
 
@@ -141,9 +115,7 @@ class _$GetCats implements GetCats {
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
     Result getCats(),
-    Result getFacts(),
     Result markAsFavorite(int index, Cat cat, bool isChecked),
-    Result updateFavorite(int index, Cat cat, bool isChecked),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -157,14 +129,10 @@ class _$GetCats implements GetCats {
   @optionalTypeArgs
   Result map<Result extends Object>({
     @required Result getCats(GetCats value),
-    @required Result getFacts(GetFacts value),
     @required Result markAsFavorite(MarkAsFavorite value),
-    @required Result updateFavorite(UpdateFavorite value),
   }) {
     assert(getCats != null);
-    assert(getFacts != null);
     assert(markAsFavorite != null);
-    assert(updateFavorite != null);
     return getCats(this);
   }
 
@@ -172,9 +140,7 @@ class _$GetCats implements GetCats {
   @optionalTypeArgs
   Result maybeMap<Result extends Object>({
     Result getCats(GetCats value),
-    Result getFacts(GetFacts value),
     Result markAsFavorite(MarkAsFavorite value),
-    Result updateFavorite(UpdateFavorite value),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -187,103 +153,6 @@ class _$GetCats implements GetCats {
 
 abstract class GetCats implements MainPageEvent {
   const factory GetCats() = _$GetCats;
-}
-
-abstract class $GetFactsCopyWith<$Res> {
-  factory $GetFactsCopyWith(GetFacts value, $Res Function(GetFacts) then) =
-      _$GetFactsCopyWithImpl<$Res>;
-}
-
-class _$GetFactsCopyWithImpl<$Res> extends _$MainPageEventCopyWithImpl<$Res>
-    implements $GetFactsCopyWith<$Res> {
-  _$GetFactsCopyWithImpl(GetFacts _value, $Res Function(GetFacts) _then)
-      : super(_value, (v) => _then(v as GetFacts));
-
-  @override
-  GetFacts get _value => super._value as GetFacts;
-}
-
-class _$GetFacts implements GetFacts {
-  const _$GetFacts();
-
-  @override
-  String toString() {
-    return 'MainPageEvent.getFacts()';
-  }
-
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) || (other is GetFacts);
-  }
-
-  @override
-  int get hashCode => runtimeType.hashCode;
-
-  @override
-  @optionalTypeArgs
-  Result when<Result extends Object>({
-    @required Result getCats(),
-    @required Result getFacts(),
-    @required Result markAsFavorite(int index, Cat cat, bool isChecked),
-    @required Result updateFavorite(int index, Cat cat, bool isChecked),
-  }) {
-    assert(getCats != null);
-    assert(getFacts != null);
-    assert(markAsFavorite != null);
-    assert(updateFavorite != null);
-    return getFacts();
-  }
-
-  @override
-  @optionalTypeArgs
-  Result maybeWhen<Result extends Object>({
-    Result getCats(),
-    Result getFacts(),
-    Result markAsFavorite(int index, Cat cat, bool isChecked),
-    Result updateFavorite(int index, Cat cat, bool isChecked),
-    @required Result orElse(),
-  }) {
-    assert(orElse != null);
-    if (getFacts != null) {
-      return getFacts();
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  Result map<Result extends Object>({
-    @required Result getCats(GetCats value),
-    @required Result getFacts(GetFacts value),
-    @required Result markAsFavorite(MarkAsFavorite value),
-    @required Result updateFavorite(UpdateFavorite value),
-  }) {
-    assert(getCats != null);
-    assert(getFacts != null);
-    assert(markAsFavorite != null);
-    assert(updateFavorite != null);
-    return getFacts(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  Result maybeMap<Result extends Object>({
-    Result getCats(GetCats value),
-    Result getFacts(GetFacts value),
-    Result markAsFavorite(MarkAsFavorite value),
-    Result updateFavorite(UpdateFavorite value),
-    @required Result orElse(),
-  }) {
-    assert(orElse != null);
-    if (getFacts != null) {
-      return getFacts(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class GetFacts implements MainPageEvent {
-  const factory GetFacts() = _$GetFacts;
 }
 
 abstract class $MarkAsFavoriteCopyWith<$Res> {
@@ -363,14 +232,10 @@ class _$MarkAsFavorite implements MarkAsFavorite {
   @optionalTypeArgs
   Result when<Result extends Object>({
     @required Result getCats(),
-    @required Result getFacts(),
     @required Result markAsFavorite(int index, Cat cat, bool isChecked),
-    @required Result updateFavorite(int index, Cat cat, bool isChecked),
   }) {
     assert(getCats != null);
-    assert(getFacts != null);
     assert(markAsFavorite != null);
-    assert(updateFavorite != null);
     return markAsFavorite(index, cat, isChecked);
   }
 
@@ -378,9 +243,7 @@ class _$MarkAsFavorite implements MarkAsFavorite {
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
     Result getCats(),
-    Result getFacts(),
     Result markAsFavorite(int index, Cat cat, bool isChecked),
-    Result updateFavorite(int index, Cat cat, bool isChecked),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -394,14 +257,10 @@ class _$MarkAsFavorite implements MarkAsFavorite {
   @optionalTypeArgs
   Result map<Result extends Object>({
     @required Result getCats(GetCats value),
-    @required Result getFacts(GetFacts value),
     @required Result markAsFavorite(MarkAsFavorite value),
-    @required Result updateFavorite(UpdateFavorite value),
   }) {
     assert(getCats != null);
-    assert(getFacts != null);
     assert(markAsFavorite != null);
-    assert(updateFavorite != null);
     return markAsFavorite(this);
   }
 
@@ -409,9 +268,7 @@ class _$MarkAsFavorite implements MarkAsFavorite {
   @optionalTypeArgs
   Result maybeMap<Result extends Object>({
     Result getCats(GetCats value),
-    Result getFacts(GetFacts value),
     Result markAsFavorite(MarkAsFavorite value),
-    Result updateFavorite(UpdateFavorite value),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -432,166 +289,25 @@ abstract class MarkAsFavorite implements MainPageEvent {
   $MarkAsFavoriteCopyWith<MarkAsFavorite> get copyWith;
 }
 
-abstract class $UpdateFavoriteCopyWith<$Res> {
-  factory $UpdateFavoriteCopyWith(
-          UpdateFavorite value, $Res Function(UpdateFavorite) then) =
-      _$UpdateFavoriteCopyWithImpl<$Res>;
-  $Res call({int index, Cat cat, bool isChecked});
-}
-
-class _$UpdateFavoriteCopyWithImpl<$Res>
-    extends _$MainPageEventCopyWithImpl<$Res>
-    implements $UpdateFavoriteCopyWith<$Res> {
-  _$UpdateFavoriteCopyWithImpl(
-      UpdateFavorite _value, $Res Function(UpdateFavorite) _then)
-      : super(_value, (v) => _then(v as UpdateFavorite));
-
-  @override
-  UpdateFavorite get _value => super._value as UpdateFavorite;
-
-  @override
-  $Res call({
-    Object index = freezed,
-    Object cat = freezed,
-    Object isChecked = freezed,
-  }) {
-    return _then(UpdateFavorite(
-      index == freezed ? _value.index : index as int,
-      cat == freezed ? _value.cat : cat as Cat,
-      isChecked == freezed ? _value.isChecked : isChecked as bool,
-    ));
-  }
-}
-
-class _$UpdateFavorite implements UpdateFavorite {
-  const _$UpdateFavorite(this.index, this.cat, this.isChecked)
-      : assert(index != null),
-        assert(cat != null),
-        assert(isChecked != null);
-
-  @override
-  final int index;
-  @override
-  final Cat cat;
-  @override
-  final bool isChecked;
-
-  @override
-  String toString() {
-    return 'MainPageEvent.updateFavorite(index: $index, cat: $cat, isChecked: $isChecked)';
-  }
-
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other is UpdateFavorite &&
-            (identical(other.index, index) ||
-                const DeepCollectionEquality().equals(other.index, index)) &&
-            (identical(other.cat, cat) ||
-                const DeepCollectionEquality().equals(other.cat, cat)) &&
-            (identical(other.isChecked, isChecked) ||
-                const DeepCollectionEquality()
-                    .equals(other.isChecked, isChecked)));
-  }
-
-  @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(index) ^
-      const DeepCollectionEquality().hash(cat) ^
-      const DeepCollectionEquality().hash(isChecked);
-
-  @override
-  $UpdateFavoriteCopyWith<UpdateFavorite> get copyWith =>
-      _$UpdateFavoriteCopyWithImpl<UpdateFavorite>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  Result when<Result extends Object>({
-    @required Result getCats(),
-    @required Result getFacts(),
-    @required Result markAsFavorite(int index, Cat cat, bool isChecked),
-    @required Result updateFavorite(int index, Cat cat, bool isChecked),
-  }) {
-    assert(getCats != null);
-    assert(getFacts != null);
-    assert(markAsFavorite != null);
-    assert(updateFavorite != null);
-    return updateFavorite(index, cat, isChecked);
-  }
-
-  @override
-  @optionalTypeArgs
-  Result maybeWhen<Result extends Object>({
-    Result getCats(),
-    Result getFacts(),
-    Result markAsFavorite(int index, Cat cat, bool isChecked),
-    Result updateFavorite(int index, Cat cat, bool isChecked),
-    @required Result orElse(),
-  }) {
-    assert(orElse != null);
-    if (updateFavorite != null) {
-      return updateFavorite(index, cat, isChecked);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  Result map<Result extends Object>({
-    @required Result getCats(GetCats value),
-    @required Result getFacts(GetFacts value),
-    @required Result markAsFavorite(MarkAsFavorite value),
-    @required Result updateFavorite(UpdateFavorite value),
-  }) {
-    assert(getCats != null);
-    assert(getFacts != null);
-    assert(markAsFavorite != null);
-    assert(updateFavorite != null);
-    return updateFavorite(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  Result maybeMap<Result extends Object>({
-    Result getCats(GetCats value),
-    Result getFacts(GetFacts value),
-    Result markAsFavorite(MarkAsFavorite value),
-    Result updateFavorite(UpdateFavorite value),
-    @required Result orElse(),
-  }) {
-    assert(orElse != null);
-    if (updateFavorite != null) {
-      return updateFavorite(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class UpdateFavorite implements MainPageEvent {
-  const factory UpdateFavorite(int index, Cat cat, bool isChecked) =
-      _$UpdateFavorite;
-
-  int get index;
-  Cat get cat;
-  bool get isChecked;
-  $UpdateFavoriteCopyWith<UpdateFavorite> get copyWith;
-}
-
 class _$MainPageStateTearOff {
   const _$MainPageStateTearOff();
 
 // ignore: unused_element
   _MainPageState call(
-      {bool signedOut,
+      {int currentPage,
+      bool isLoading,
+      bool signedOut,
       bool requestData,
       bool isChecked,
       Cats cats,
       Cats favoriteCats,
       Facts facts,
       bool catsIsEmpty,
-      bool factsIsEmpty}) {
+      bool factsIsEmpty,
+      bool favoriteCatsIsEmpty}) {
     return _MainPageState(
+      currentPage: currentPage,
+      isLoading: isLoading,
       signedOut: signedOut,
       requestData: requestData,
       isChecked: isChecked,
@@ -600,6 +316,7 @@ class _$MainPageStateTearOff {
       facts: facts,
       catsIsEmpty: catsIsEmpty,
       factsIsEmpty: factsIsEmpty,
+      favoriteCatsIsEmpty: favoriteCatsIsEmpty,
     );
   }
 }
@@ -608,6 +325,8 @@ class _$MainPageStateTearOff {
 const $MainPageState = _$MainPageStateTearOff();
 
 mixin _$MainPageState {
+  int get currentPage;
+  bool get isLoading;
   bool get signedOut;
   bool get requestData;
   bool get isChecked;
@@ -616,6 +335,7 @@ mixin _$MainPageState {
   Facts get facts;
   bool get catsIsEmpty;
   bool get factsIsEmpty;
+  bool get favoriteCatsIsEmpty;
 
   $MainPageStateCopyWith<MainPageState> get copyWith;
 }
@@ -625,14 +345,17 @@ abstract class $MainPageStateCopyWith<$Res> {
           MainPageState value, $Res Function(MainPageState) then) =
       _$MainPageStateCopyWithImpl<$Res>;
   $Res call(
-      {bool signedOut,
+      {int currentPage,
+      bool isLoading,
+      bool signedOut,
       bool requestData,
       bool isChecked,
       Cats cats,
       Cats favoriteCats,
       Facts facts,
       bool catsIsEmpty,
-      bool factsIsEmpty});
+      bool factsIsEmpty,
+      bool favoriteCatsIsEmpty});
 }
 
 class _$MainPageStateCopyWithImpl<$Res>
@@ -645,6 +368,8 @@ class _$MainPageStateCopyWithImpl<$Res>
 
   @override
   $Res call({
+    Object currentPage = freezed,
+    Object isLoading = freezed,
     Object signedOut = freezed,
     Object requestData = freezed,
     Object isChecked = freezed,
@@ -653,8 +378,12 @@ class _$MainPageStateCopyWithImpl<$Res>
     Object facts = freezed,
     Object catsIsEmpty = freezed,
     Object factsIsEmpty = freezed,
+    Object favoriteCatsIsEmpty = freezed,
   }) {
     return _then(_value.copyWith(
+      currentPage:
+          currentPage == freezed ? _value.currentPage : currentPage as int,
+      isLoading: isLoading == freezed ? _value.isLoading : isLoading as bool,
       signedOut: signedOut == freezed ? _value.signedOut : signedOut as bool,
       requestData:
           requestData == freezed ? _value.requestData : requestData as bool,
@@ -667,6 +396,9 @@ class _$MainPageStateCopyWithImpl<$Res>
           catsIsEmpty == freezed ? _value.catsIsEmpty : catsIsEmpty as bool,
       factsIsEmpty:
           factsIsEmpty == freezed ? _value.factsIsEmpty : factsIsEmpty as bool,
+      favoriteCatsIsEmpty: favoriteCatsIsEmpty == freezed
+          ? _value.favoriteCatsIsEmpty
+          : favoriteCatsIsEmpty as bool,
     ));
   }
 }
@@ -678,14 +410,17 @@ abstract class _$MainPageStateCopyWith<$Res>
       __$MainPageStateCopyWithImpl<$Res>;
   @override
   $Res call(
-      {bool signedOut,
+      {int currentPage,
+      bool isLoading,
+      bool signedOut,
       bool requestData,
       bool isChecked,
       Cats cats,
       Cats favoriteCats,
       Facts facts,
       bool catsIsEmpty,
-      bool factsIsEmpty});
+      bool factsIsEmpty,
+      bool favoriteCatsIsEmpty});
 }
 
 class __$MainPageStateCopyWithImpl<$Res>
@@ -700,6 +435,8 @@ class __$MainPageStateCopyWithImpl<$Res>
 
   @override
   $Res call({
+    Object currentPage = freezed,
+    Object isLoading = freezed,
     Object signedOut = freezed,
     Object requestData = freezed,
     Object isChecked = freezed,
@@ -708,8 +445,12 @@ class __$MainPageStateCopyWithImpl<$Res>
     Object facts = freezed,
     Object catsIsEmpty = freezed,
     Object factsIsEmpty = freezed,
+    Object favoriteCatsIsEmpty = freezed,
   }) {
     return _then(_MainPageState(
+      currentPage:
+          currentPage == freezed ? _value.currentPage : currentPage as int,
+      isLoading: isLoading == freezed ? _value.isLoading : isLoading as bool,
       signedOut: signedOut == freezed ? _value.signedOut : signedOut as bool,
       requestData:
           requestData == freezed ? _value.requestData : requestData as bool,
@@ -722,21 +463,31 @@ class __$MainPageStateCopyWithImpl<$Res>
           catsIsEmpty == freezed ? _value.catsIsEmpty : catsIsEmpty as bool,
       factsIsEmpty:
           factsIsEmpty == freezed ? _value.factsIsEmpty : factsIsEmpty as bool,
+      favoriteCatsIsEmpty: favoriteCatsIsEmpty == freezed
+          ? _value.favoriteCatsIsEmpty
+          : favoriteCatsIsEmpty as bool,
     ));
   }
 }
 
 class _$_MainPageState implements _MainPageState {
   const _$_MainPageState(
-      {this.signedOut,
+      {this.currentPage,
+      this.isLoading,
+      this.signedOut,
       this.requestData,
       this.isChecked,
       this.cats,
       this.favoriteCats,
       this.facts,
       this.catsIsEmpty,
-      this.factsIsEmpty});
+      this.factsIsEmpty,
+      this.favoriteCatsIsEmpty});
 
+  @override
+  final int currentPage;
+  @override
+  final bool isLoading;
   @override
   final bool signedOut;
   @override
@@ -753,16 +504,24 @@ class _$_MainPageState implements _MainPageState {
   final bool catsIsEmpty;
   @override
   final bool factsIsEmpty;
+  @override
+  final bool favoriteCatsIsEmpty;
 
   @override
   String toString() {
-    return 'MainPageState(signedOut: $signedOut, requestData: $requestData, isChecked: $isChecked, cats: $cats, favoriteCats: $favoriteCats, facts: $facts, catsIsEmpty: $catsIsEmpty, factsIsEmpty: $factsIsEmpty)';
+    return 'MainPageState(currentPage: $currentPage, isLoading: $isLoading, signedOut: $signedOut, requestData: $requestData, isChecked: $isChecked, cats: $cats, favoriteCats: $favoriteCats, facts: $facts, catsIsEmpty: $catsIsEmpty, factsIsEmpty: $factsIsEmpty, favoriteCatsIsEmpty: $favoriteCatsIsEmpty)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other is _MainPageState &&
+            (identical(other.currentPage, currentPage) ||
+                const DeepCollectionEquality()
+                    .equals(other.currentPage, currentPage)) &&
+            (identical(other.isLoading, isLoading) ||
+                const DeepCollectionEquality()
+                    .equals(other.isLoading, isLoading)) &&
             (identical(other.signedOut, signedOut) ||
                 const DeepCollectionEquality()
                     .equals(other.signedOut, signedOut)) &&
@@ -784,12 +543,17 @@ class _$_MainPageState implements _MainPageState {
                     .equals(other.catsIsEmpty, catsIsEmpty)) &&
             (identical(other.factsIsEmpty, factsIsEmpty) ||
                 const DeepCollectionEquality()
-                    .equals(other.factsIsEmpty, factsIsEmpty)));
+                    .equals(other.factsIsEmpty, factsIsEmpty)) &&
+            (identical(other.favoriteCatsIsEmpty, favoriteCatsIsEmpty) ||
+                const DeepCollectionEquality()
+                    .equals(other.favoriteCatsIsEmpty, favoriteCatsIsEmpty)));
   }
 
   @override
   int get hashCode =>
       runtimeType.hashCode ^
+      const DeepCollectionEquality().hash(currentPage) ^
+      const DeepCollectionEquality().hash(isLoading) ^
       const DeepCollectionEquality().hash(signedOut) ^
       const DeepCollectionEquality().hash(requestData) ^
       const DeepCollectionEquality().hash(isChecked) ^
@@ -797,7 +561,8 @@ class _$_MainPageState implements _MainPageState {
       const DeepCollectionEquality().hash(favoriteCats) ^
       const DeepCollectionEquality().hash(facts) ^
       const DeepCollectionEquality().hash(catsIsEmpty) ^
-      const DeepCollectionEquality().hash(factsIsEmpty);
+      const DeepCollectionEquality().hash(factsIsEmpty) ^
+      const DeepCollectionEquality().hash(favoriteCatsIsEmpty);
 
   @override
   _$MainPageStateCopyWith<_MainPageState> get copyWith =>
@@ -806,15 +571,22 @@ class _$_MainPageState implements _MainPageState {
 
 abstract class _MainPageState implements MainPageState {
   const factory _MainPageState(
-      {bool signedOut,
+      {int currentPage,
+      bool isLoading,
+      bool signedOut,
       bool requestData,
       bool isChecked,
       Cats cats,
       Cats favoriteCats,
       Facts facts,
       bool catsIsEmpty,
-      bool factsIsEmpty}) = _$_MainPageState;
+      bool factsIsEmpty,
+      bool favoriteCatsIsEmpty}) = _$_MainPageState;
 
+  @override
+  int get currentPage;
+  @override
+  bool get isLoading;
   @override
   bool get signedOut;
   @override
@@ -831,6 +603,8 @@ abstract class _MainPageState implements MainPageState {
   bool get catsIsEmpty;
   @override
   bool get factsIsEmpty;
+  @override
+  bool get favoriteCatsIsEmpty;
   @override
   _$MainPageStateCopyWith<_MainPageState> get copyWith;
 }

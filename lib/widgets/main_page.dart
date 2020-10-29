@@ -1,6 +1,8 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:network_to_file_image/network_to_file_image.dart';
@@ -21,11 +23,8 @@ class MainPage extends StatelessWidget {
     debugPrint("MainPage created");
     final Map<String, Object> arguments =
         ModalRoute.of(context).settings.arguments;
-    // debugPrint("MainPage arguments = $arguments");
     return BlocProvider(
-      create: (context) => getIt<MainPageBloc>()
-        ..add(MainPageEvent.getCats())
-        ..add(MainPageEvent.getFacts()),
+      create: (context) => getIt<MainPageBloc>()..add(MainPageEvent.getCats()),
       child: BlocConsumer<MainPageBloc, MainPageState>(
         listener: (context, state) {},
         builder: (context, state) {
@@ -52,7 +51,7 @@ class MainPage extends StatelessWidget {
                 body: TabBarView(
                   children: [
                     _createCatsList(state, context),
-                    _createFavoritesList(state, context),
+                    _createCatsFavoritesList(state, context),
                     _createProfile(context, arguments['userData'], state),
                   ],
                 ),
@@ -65,117 +64,283 @@ class MainPage extends StatelessWidget {
   }
 
   Widget _createCatsList(MainPageState state, BuildContext context) {
-    // debugPrint("main list updated");
-    return _createList(state.cats.list, context, state.isChecked, state, false);
+    debugPrint("main list UI created");
+    if (state.cats.list != null &&
+        state.cats.list.isNotEmpty &&
+        !state.signedOut) {
+      return _createList(state.cats.list, context, state.isChecked, state);
+    } else {
+      return Center(
+        child: CircularProgressIndicator(),
+      );
+    }
   }
 
-  Widget _createFavoritesList(MainPageState state, BuildContext context) {
-    // debugPrint("favorites list updated");
-    return _createList(
-        state.favoriteCats.list, context, state.isChecked, state, true);
+  Widget _createCatsFavoritesList(MainPageState state, BuildContext context) {
+    debugPrint("favorites list UI created");
+    if (state.favoriteCats.list != null &&
+        state.favoriteCats.list.isNotEmpty &&
+        !state.signedOut) {
+      return _createFavoritesList(
+          state.favoriteCats.list, context, state.isChecked, state);
+    } else {
+      return Center(
+        child: Text(
+          'No favorites added',
+          style: TextStyle(fontSize: 25),
+        ),
+      );
+    }
   }
 
   Widget _createList(List<Cat> catsList, BuildContext context, bool isChecked,
-      MainPageState state, bool isFavorite) {
-    if (catsList != null && catsList.isNotEmpty && !state.signedOut) {
-      double screenWidth = MediaQuery.of(context).size.width;
-      // debugPrint('MainPage _createList');
-      return ListView.builder(
-        shrinkWrap: true,
-        itemCount: catsList.length,
-        itemBuilder: (BuildContext context, int index) {
-          // debugPrint('MainPage ListView.builder $index');
-          return Container(
-            width: catsList[index].width <= screenWidth
-                ? catsList[index].width.toDouble()
-                : screenWidth,
-            color: Colors.white70,
-            child: Column(
-              children: [
-                InkWell(
-                  onTap: () {
-                    // debugPrint("image clicked");
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => DetailPage(
-                          catsList[index],
-                          state.facts.data[index],
-                        ),
+      MainPageState state) {
+    debugPrint('MainPage inside _createList');
+    double screenWidth = MediaQuery.of(context).size.width;
+    bool isLoading = state.isLoading;
+    return NotificationListener<ScrollNotification>(
+      onNotification: (ScrollNotification scrollInfo) {
+        if (scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent) {
+          if (!isLoading) {
+            isLoading = true;
+            context.bloc<MainPageBloc>().add(MainPageEvent.getCats());
+          }
+        }
+        return false;
+      },
+      child: Stack(
+        children: [
+          ListView.builder(
+            shrinkWrap: true,
+            itemCount: catsList.length,
+            itemBuilder: (BuildContext context, int index) {
+              return Container(
+                constraints: BoxConstraints(
+                  minWidth: screenWidth,
+                  maxWidth: screenWidth,
+                  minHeight: screenWidth / 1.3,
+                  maxHeight: double.infinity,
+                ),
+                color: Colors.white70,
+                child: Stack(
+                  children: [
+                    Container(
+                      constraints: BoxConstraints(
+                        minWidth: screenWidth,
+                        maxWidth: screenWidth,
+                        minHeight: screenWidth / 1.3,
+                        maxHeight: double.infinity,
                       ),
-                    ).then(
-                      (value) => {
-                        debugPrint("MainPage returned from detail $value"),
-                        context.bloc<MainPageBloc>().add(
-                              MainPageEvent.updateFavorite(
-                                index,
-                                catsList[index],
-                                value,
+                      child: Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.all(10),
+                      child: Card(
+                        clipBehavior: Clip.antiAlias,
+                        elevation: 5,
+                        shape: RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(20))),
+                        child: Column(
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                // debugPrint("image clicked");
+                                Navigator.push(
+                                  context,
+                                  PageRouteBuilder(
+                                    transitionDuration: Duration(seconds: 1),
+                                    pageBuilder: (_, __, ___) => DetailPage(
+                                      catsList[index],
+                                      state.facts.data[index],
+                                    ),
+                                  ),
+                                ).then(
+                                  (value) => {
+                                    debugPrint(
+                                        "MainPage -> detail returned $value to cats list"),
+                                    context.bloc<MainPageBloc>().add(
+                                          MainPageEvent.markAsFavorite(
+                                            index,
+                                            catsList[index],
+                                            value,
+                                          ),
+                                        ),
+                                  },
+                                );
+                              },
+                              child: Hero(
+                                tag: catsList[index].id,
+                                child: Image(
+                                  image: NetworkToFileImage(
+                                    debug: true,
+                                    processError: (_) {
+                                      debugPrint(
+                                          "MainPage error image download");
+                                    },
+                                    url: catsList[index].url,
+                                    file: File(catsList[index].filePath),
+                                  ),
+                                ),
                               ),
                             ),
-                      },
-                    );
-                  },
-                  child: Hero(
-                    tag: catsList[index].id,
-                    child: Image(
-                      image: NetworkToFileImage(
-                        debug: true,
-                        processError: (_) {
-                          // debugPrint("MainPage error image download");
-                        },
-                        url: catsList[index].url,
-                        file: File(catsList[index].filePath),
+                            Row(
+                              children: [
+                                Expanded(child: Container()),
+                                InkWell(
+                                  onTap: () {
+                                    debugPrint("MainPage favorites tapped ");
+                                    context.bloc<MainPageBloc>().add(
+                                          MainPageEvent.markAsFavorite(
+                                            index,
+                                            catsList[index],
+                                            !catsList[index].isFavorite,
+                                          ),
+                                        );
+                                  },
+                                  child: Container(
+                                    width: 50,
+                                    height: 50,
+                                    color: Colors.white,
+                                    child: SvgPicture.asset(
+                                        catsList[index].isFavorite
+                                            ? 'assets/ic_heart_checked.svg'
+                                            : 'assets/ic_heart_unchecked.svg'),
+                                  ),
+                                ),
+                                Container(
+                                  width: 30,
+                                  height: 30,
+                                  color: Colors.white,
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                  ),
-                ),
-                Row(
-                  children: [
-                    Expanded(child: Container()),
-                    InkWell(
-                      onTap: () {
-                        // debugPrint("MainPage favorites tapped ");
-                        context.bloc<MainPageBloc>().add(
-                            MainPageEvent.markAsFavorite(
-                                index, catsList[index], !isChecked));
-                      },
-                      child: Container(
-                        width: 50,
-                        height: 50,
-                        color: Colors.white,
-                        child: SvgPicture.asset(catsList[index].isFavorite
-                            ? 'assets/ic_heart_checked.svg'
-                            : 'assets/ic_heart_unchecked.svg'),
-                      ),
-                    ),
-                    Container(
-                      width: 30,
-                      height: 30,
-                      color: Colors.white,
                     ),
                   ],
                 ),
-              ],
+              );
+            },
+          ),
+          isLoading
+              ? Container(
+                  color: Color.fromARGB(130, 255, 255, 255),
+                  child: Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                )
+              : Container(),
+        ],
+      ),
+    );
+  }
+
+  Widget _createFavoritesList(List<Cat> catsList, BuildContext context,
+      bool isChecked, MainPageState state) {
+    debugPrint('MainPage inside _createFavoritesList');
+    double screenWidth = MediaQuery.of(context).size.width;
+    return ListView.builder(
+      shrinkWrap: true,
+      itemCount: catsList.length,
+      itemBuilder: (BuildContext context, int index) {
+        return Container(
+          width: catsList[index].width <= screenWidth
+              ? catsList[index].width.toDouble()
+              : screenWidth,
+          color: Colors.white70,
+          child: Padding(
+            padding: EdgeInsets.all(10),
+            child: Card(
+              clipBehavior: Clip.antiAlias,
+              elevation: 5,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(20))),
+              child: Column(
+                children: [
+                  InkWell(
+                    onTap: () {
+                      // debugPrint("image clicked");
+                      Navigator.push(
+                        context,
+                        PageRouteBuilder(
+                          transitionDuration: Duration(seconds: 1),
+                          pageBuilder: (_, __, ___) => DetailPage(
+                            catsList[index],
+                            state.facts.data[index],
+                          ),
+                        ),
+                      ).then(
+                        (value) => {
+                          debugPrint(
+                              "MainPage detail returned -> $value to favorites cats list"),
+                          Timer(
+                            Duration(milliseconds: 300),
+                            () => {
+                              context.bloc<MainPageBloc>().add(
+                                    MainPageEvent.markAsFavorite(
+                                      index,
+                                      catsList[index],
+                                      value,
+                                    ),
+                                  ),
+                            },
+                          ),
+                        },
+                      );
+                    },
+                    child: Hero(
+                      tag: catsList[index].id,
+                      child: Image(
+                        image: NetworkToFileImage(
+                          debug: true,
+                          processError: (_) {
+                            debugPrint("MainPage error image download");
+                          },
+                          url: catsList[index].url,
+                          file: File(catsList[index].filePath),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Row(
+                    children: [
+                      Expanded(child: Container()),
+                      InkWell(
+                        onTap: () {
+                          // debugPrint("MainPage favorites tapped ");
+                          context.bloc<MainPageBloc>().add(
+                              MainPageEvent.markAsFavorite(
+                                  index,
+                                  catsList[index],
+                                  !catsList[index].isFavorite));
+                        },
+                        child: Container(
+                          width: 50,
+                          height: 50,
+                          color: Colors.white,
+                          child: SvgPicture.asset(catsList[index].isFavorite
+                              ? 'assets/ic_heart_checked.svg'
+                              : 'assets/ic_heart_unchecked.svg'),
+                        ),
+                      ),
+                      Container(
+                        width: 30,
+                        height: 30,
+                        color: Colors.white,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
-          );
-        },
-      );
-    } else {
-      // debugPrint('MainPage return Center');
-      if (isFavorite) {
-        return Center(
-          child: Text(
-            'No favorites added',
-            style: TextStyle(fontSize: 25),
           ),
         );
-      } else {
-        return Center(
-          child: CircularProgressIndicator(),
-        );
-      }
-    }
+      },
+    );
   }
 
   Widget _createProfile(

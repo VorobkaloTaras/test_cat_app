@@ -24,7 +24,16 @@ class SharedPrefs {
   Cats get cats {
     String data = _sharedPrefs.getString(catsData);
     if (data != null) {
-      return Cats.fromJson(jsonDecode(_sharedPrefs.getString(catsData)));
+      return Cats.fromJson(jsonDecode(data));
+    }else{
+      return null;
+    }
+  }
+
+  Cats get favoriteCats {
+    String data = _sharedPrefs.getString(favoriteCatsData);
+    if (data != null) {
+      return Cats.fromJson(jsonDecode(data));
     }else{
       return null;
     }
@@ -35,10 +44,15 @@ class SharedPrefs {
     _sharedPrefs.setString(catsData, jsonEncode(value.toJson()));
   }
 
+  set favoriteCats(Cats value) {
+    // debugPrint('cats saved');
+    _sharedPrefs.setString(favoriteCatsData, jsonEncode(value.toJson()));
+  }
+
   Facts get facts {
     String data = _sharedPrefs.getString(factsData);
     if (data != null) {
-      return Facts.fromJson(jsonDecode(_sharedPrefs.getString(factsData)));
+      return Facts.fromJson(jsonDecode(data));
     }else{
       return null;
     }
@@ -63,6 +77,7 @@ class SharedPrefs {
   }
 }
 
+const String favoriteCatsData = "favorite_cats_data";
 const String catsData = "cats_data";
 const String factsData = "facts_data";
 const String facebookUser = "facebook_user_profile";

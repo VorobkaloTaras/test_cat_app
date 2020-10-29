@@ -14,15 +14,18 @@ import 'package:test_cat_app/core/user/user_account.dart';
 import 'package:test_cat_app/repository/app_directory.dart';
 
 class HttpService {
-  final int itemLimit = 3;
+  final int itemLimit = 10;
+  int pageNumber = -1;
+  final String apiKey = "a9916325-9511-42c1-a783-d0538a22fa4d";
   final AppDirectory _appDirectory = AppDirectory();
 
   Future<Cats> getCats() async {
     // debugPrint("sending request");
+    pageNumber = pageNumber + 1;
     Response response;
     try {
       response = await get(
-          "https://api.thecatapi.com/v1/images/search?limit=$itemLimit&page=0&order=DESC");
+          "https://api.thecatapi.com/v1/images/search?api_key=$apiKey&limit=$itemLimit&page=$pageNumber&order=DESC");
       // debugPrint('cats response');
     } on Exception catch (e) {
       debugPrint('get Cats exception');
@@ -42,7 +45,13 @@ class HttpService {
                 .replaceAll(".", "_")
                 .toString());
       });
-      return Cats(list: catsList, success: true);
+      return Cats(
+        list: catsList,
+        success: true,
+        paginationPage: int.parse(response.headers['pagination-page']),
+        paginationLimit: int.parse(response.headers['pagination-limit']),
+        paginationCount: int.parse(response.headers['pagination-count']),
+      );
     } else {
       debugPrint('getCats error');
       return Cats(list: null, success: false);
@@ -52,7 +61,8 @@ class HttpService {
   Future<Facts> getFacts() async {
     Response response;
     try {
-      response = await get('https://catfact.ninja/facts?limit=$itemLimit');
+      response = await get(
+          'https://catfact.ninja/facts?page=$pageNumber&limit=$itemLimit&max_length=300');
       // debugPrint('facts response');
     } on Exception catch (e) {
       debugPrint('getFacts exception');

@@ -29,70 +29,81 @@ class MainPageBloc extends Bloc<MainPageEvent, MainPageState> {
   ) async* {
     yield* event.map(
       getCats: (e) async* {
-        debugPrint("inside getCats");
-        Cats cats = await _httpFacade.getCatsImages();
-        if (cats.success) {
+        yield state.copyWith(isLoading: true);
+        // debugPrint("inside getCats");
+
+        Cats cats = state.cats;
+        Cats favoriteCats = state.favoriteCats;
+        Facts facts = state.facts;
+        bool catsIsEmpty;
+        bool favoriteCatsIsEmpty;
+        bool factsIsEmpty;
+
+        Cats receivedCats = await _httpFacade.getCatsImages();
+        if (receivedCats.success) {
           // debugPrint("Cats received ${cats.list.length}");
+          cats.list.addAll(receivedCats.list);
           _sharedPrefs.cats = cats;
-          yield state.copyWith(cats: cats);
         } else {
-          debugPrint("Cats not received");
-          Cats cats = _sharedPrefs.cats;
+          // debugPrint("Cats not received");
+          cats = _sharedPrefs.cats;
+          favoriteCats = _sharedPrefs.favoriteCats;
           if (cats != null) {
-            debugPrint("_sharedPrefs.cats");
-            yield state.copyWith(cats: cats);
+            // debugPrint("_sharedPrefs.cats");
+            catsIsEmpty = false;
           } else {
-            debugPrint("Cats = catsIsEmpty");
-            yield state.copyWith(catsIsEmpty: true);
+            // debugPrint("Cats = catsIsEmpty");
+            catsIsEmpty = true;
+          }
+          if (favoriteCats != null) {
+            favoriteCatsIsEmpty = false;
+          } else {
+            favoriteCatsIsEmpty = true;
           }
         }
-      },
-      getFacts: (e) async* {
-        // debugPrint("inside getFacts");
-        Facts facts = await _httpFacade.getCatsFacts();
-        if (facts.success) {
-          // debugPrint("Facts received");
+        // debugPrint(" getCats done");
+        Facts receivedFacts = await _httpFacade.getCatsFacts();
+        if (receivedFacts.success) {
+          facts.data.addAll(receivedFacts.data);
           _sharedPrefs.facts = facts;
-          yield state.copyWith(facts: facts);
         } else {
-          debugPrint("Facts not received");
-          Facts facts = _sharedPrefs.facts;
+          // debugPrint("Facts not received");
+          facts = _sharedPrefs.facts;
           if (facts != null) {
-            debugPrint("_sharedPrefs.facts");
-            yield state.copyWith(facts: facts);
+            // debugPrint("_sharedPrefs.facts");
+            factsIsEmpty = false;
           } else {
-            debugPrint("Facts = factsIsEmpty");
-            yield state.copyWith(factsIsEmpty: true);
+            // debugPrint("Facts = factsIsEmpty");
+            factsIsEmpty = true;
           }
         }
+        // debugPrint(" getFacts done");
+        yield state.copyWith(
+            cats: cats,
+            facts: facts,
+            favoriteCats: favoriteCats,
+            catsIsEmpty: catsIsEmpty,
+            favoriteCatsIsEmpty: favoriteCatsIsEmpty,
+            factsIsEmpty: factsIsEmpty,
+            isLoading: false);
       },
       markAsFavorite: (e) async* {
-        // debugPrint("inside bloc markAsFavorite" );
+        debugPrint("inside bloc markAsFavorite");
         state.favoriteCats.list.clear();
         Cat cat =
             state.cats.list.firstWhere((element) => element.id == e.cat.id);
         cat.isFavorite = e.isChecked;
-        List<Cat> newCatsList =
+        List<Cat> favoriteCatsList =
             state.cats.list.where((item) => item.isFavorite).toList();
+        Cats cats = Cats(list: state.cats.list, success: true);
+        Cats favoriteCats = Cats(list: favoriteCatsList, success: true);
         yield state.copyWith(
-          cats: Cats(list: state.cats.list, success: true),
-          favoriteCats: Cats(list: newCatsList, success: true),
+          cats: cats,
+          favoriteCats: favoriteCats,
           isChecked: e.isChecked,
         );
-      },
-      updateFavorite: (e) async* {
-        // debugPrint("inside bloc updateFavorite" );
-        state.favoriteCats.list.clear();
-        Cat cat =
-            state.cats.list.firstWhere((element) => element.id == e.cat.id);
-        cat.isFavorite = e.isChecked;
-        List<Cat> newCatsList =
-            state.cats.list.where((item) => item.isFavorite).toList();
-        yield state.copyWith(
-          cats: Cats(list: state.cats.list, success: true),
-          favoriteCats: Cats(list: newCatsList, success: true),
-          isChecked: e.isChecked,
-        );
+        _sharedPrefs.cats = cats;
+        _sharedPrefs.favoriteCats = favoriteCats;
       },
     );
   }
