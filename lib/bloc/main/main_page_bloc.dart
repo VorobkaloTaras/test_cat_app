@@ -35,9 +35,6 @@ class MainPageBloc extends Bloc<MainPageEvent, MainPageState> {
         Cats cats = state.cats;
         Cats favoriteCats = state.favoriteCats;
         Facts facts = state.facts;
-        bool catsIsEmpty;
-        bool favoriteCatsIsEmpty;
-        bool factsIsEmpty;
 
         Cats receivedCats = await _httpFacade.getCatsImages();
         if (receivedCats.success) {
@@ -48,18 +45,6 @@ class MainPageBloc extends Bloc<MainPageEvent, MainPageState> {
           // debugPrint("Cats not received");
           cats = _sharedPrefs.cats;
           favoriteCats = _sharedPrefs.favoriteCats;
-          if (cats != null) {
-            // debugPrint("_sharedPrefs.cats");
-            catsIsEmpty = false;
-          } else {
-            // debugPrint("Cats = catsIsEmpty");
-            catsIsEmpty = true;
-          }
-          if (favoriteCats != null) {
-            favoriteCatsIsEmpty = false;
-          } else {
-            favoriteCatsIsEmpty = true;
-          }
         }
         // debugPrint(" getCats done");
         Facts receivedFacts = await _httpFacade.getCatsFacts();
@@ -69,22 +54,15 @@ class MainPageBloc extends Bloc<MainPageEvent, MainPageState> {
         } else {
           // debugPrint("Facts not received");
           facts = _sharedPrefs.facts;
-          if (facts != null) {
-            // debugPrint("_sharedPrefs.facts");
-            factsIsEmpty = false;
-          } else {
-            // debugPrint("Facts = factsIsEmpty");
-            factsIsEmpty = true;
-          }
         }
         // debugPrint(" getFacts done");
         yield state.copyWith(
             cats: cats,
             facts: facts,
             favoriteCats: favoriteCats,
-            catsIsEmpty: catsIsEmpty,
-            favoriteCatsIsEmpty: favoriteCatsIsEmpty,
-            factsIsEmpty: factsIsEmpty,
+            catsIsEmpty: cats == null,
+            favoriteCatsIsEmpty: favoriteCats == null,
+            factsIsEmpty: facts == null,
             isLoading: false);
       },
       markAsFavorite: (e) async* {
